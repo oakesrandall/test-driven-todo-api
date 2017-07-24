@@ -92,6 +92,9 @@ app.put('/api/todos/:id', function update(req, res) {
 });
 
 app.delete('/api/todos/:id', function destroy(req, res) {
+  var index = req.params.id;
+  res.json({todos: todos});
+  todos.splice(index -1, 1);
   /* This endpoint will delete a single todo with the
    * id specified in the route parameter (:id) and respond
    * with deleted todo.
