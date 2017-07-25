@@ -33,7 +33,7 @@ app.get('/', function homepage(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/')
+app.get('/');
 
 
 /*
@@ -47,9 +47,13 @@ app.get('/')
  */
 
 app.get('/api/todos/search', function search(req, res) {
-  /* This endpoint responds with the search results from the
-   * query in the request. COMPLETE THIS ENDPOINT LAST.
-   */
+  let searchQuery = req.query.q; 
+//   let foundIt = todos.filter(function(todo){
+//     if (todo.task.toLowerCase().includes(searchQuery.toLowerCase())) {
+//       return todo;
+//     }
+//   });
+//   res.send(foundIt);
 });
 
 app.get('/api/todos', function index(req, res) {
@@ -58,47 +62,25 @@ app.get('/api/todos', function index(req, res) {
 
 app.post('/api/todos', function create(req, res) {
   var newTodo = {'_id': todos.length += 1, 'task': req.body.task, 'description': req.body.description};
-  res.send(newTodo);
-
-  // var newTodo = (res.body);
-  // todos.push(newTodo);
-  // newTodo._id = todos.length;
-  // res.json({todos: todos});
-
-  /* This endpoint will add a todo to our "database"
-   * and respond with the newly created todo.
-   */
+  res.send(newTodo);  
 });
 
 app.get('/api/todos/:id', function show(req, res) {
   var id = req.params.id;
   res.send(todos[req.params.id-1]);
-  /* This endpoint will return a single todo with the
-   * id specified in the route parameter (:id)
-   */
 });
 
 app.put('/api/todos/:id', function update(req, res) {
-  
-
   var updateTodo = todos[req.params.id-1];
   updateTodo.task = req.body.task;
   updateTodo.description =  req.body.description;
   res.send(updateTodo);
-  /* This endpoint will update a single todo with the
-   * id specified in the route parameter (:id) and respond
-   * with the newly updated todo.
-   */
 });
 
 app.delete('/api/todos/:id', function destroy(req, res) {
   var index = req.params.id;
   res.json({todos: todos});
   todos.splice(index -1, 1);
-  /* This endpoint will delete a single todo with the
-   * id specified in the route parameter (:id) and respond
-   * with deleted todo.
-   */
 });
 
 /**********
