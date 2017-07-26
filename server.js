@@ -45,6 +45,7 @@ app.get('/');
  * the tests to see the exact details. BUILD THE FUNCTIONALITY IN THE
  * ORDER THAT THE TESTS DICTATE.
  */
+var arrayLength = 3;
 
 app.get('/api/todos/search', function search(req, res) {
   let searchQuery = req.query.q; 
@@ -61,26 +62,42 @@ app.get('/api/todos', function index(req, res) {
 });
 
 app.post('/api/todos', function create(req, res) {
-  var newTodo = {'_id': todos.length += 1, 'task': req.body.task, 'description': req.body.description};
-  res.send(newTodo);  
+  var newTodo = {'_id': arrayLength + 1, 'task': req.body.task, 'description': req.body.description};
+  arrayLength ++;
+  res.json(newTodo);  
 });
 
 app.get('/api/todos/:id', function show(req, res) {
   var id = req.params.id;
-  res.send(todos[req.params.id-1]);
+  for (var i = 0; i < todos.length; i++) {
+    if (todos[i]._id == id) {
+      res.json(todos[i]);
+    }
+  }
 });
 
 app.put('/api/todos/:id', function update(req, res) {
-  var updateTodo = todos[req.params.id-1];
-  updateTodo.task = req.body.task;
-  updateTodo.description =  req.body.description;
-  res.send(updateTodo);
+  var id = req.params.id;
+  todos.forEach(function(item) {
+    if (item._id == id) {
+      var updateTodo = item;
+      updateTodo.task = req.body.task;
+      updateTodo.description = req.body.description;
+      res.json(updateTodo);
+    }
+  });
 });
 
 app.delete('/api/todos/:id', function destroy(req, res) {
-  var index = req.params.id;
+  var id = req.params.id;
+  var deleteMeId;
+  todos.forEach(function(item, index) {
+    if (item._id == id) {
+      deleteMeId = index;
+    }
+  });
   res.json({todos: todos});
-  todos.splice(index -1, 1);
+  todos.splice(deleteMeId, 1);
 });
 
 /**********
